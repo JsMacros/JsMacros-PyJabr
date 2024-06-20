@@ -2,8 +2,8 @@ plugins {
     java
 }
 
-group = "io.github.gaming32"
-version = "1.0-SNAPSHOT"
+group = "xyz.wagyourtail.jsmacros"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
