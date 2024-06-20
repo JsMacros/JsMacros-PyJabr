@@ -22,17 +22,20 @@ public class PyJabrLanguageDefinition extends BaseLanguage<Object, PyJabrContext
         super(extension, runner);
     }
 
-    public PythonObject buildGlobals(PyJabrContext ctx) {
+    public PythonObject buildGlobals(EventContainer<PyJabrContext> ctx, BaseEvent event) {
         PythonObject globals = PythonObjects.stringDict(Map.of("__builtins__", PythonObjects.getBuiltins()));
-        for (Map.Entry<String, BaseLibrary> entry : retrieveLibs(ctx).entrySet()) {
+        for (Map.Entry<String, BaseLibrary> entry : retrieveLibs(ctx.getCtx()).entrySet()) {
             globals.setItem(PythonObjects.str(entry.getKey()), PythonObject.fromJavaObject(entry.getValue()));
         }
+        globals.setItem(PythonObjects.str("event"), PythonObject.fromJavaObject(event));
+        globals.setItem(PythonObjects.str("ctx"), PythonObject.fromJavaObject(ctx));
+        globals.setItem(PythonObjects.str("file"), PythonObject.fromJavaObject(ctx.getCtx().getFile()));
         return globals;
     }
 
     @Override
     protected void exec(EventContainer<PyJabrContext> eventContainer, ScriptTrigger scriptTrigger, BaseEvent baseEvent) throws Exception {
-        PythonExec.execCode(Files.readAllBytes(eventContainer.getCtx().getFile().toPath()), eventContainer.getCtx().getFile().getCanonicalPath(), buildGlobals(eventContainer.getCtx()));
+        PythonExec.execCode(Files.readAllBytes(eventContainer.getCtx().getFile().toPath()), eventContainer.getCtx().getFile().getCanonicalPath(), buildGlobals(eventContainer, baseEvent));
     }
 
     @Override
@@ -41,7 +44,7 @@ public class PyJabrLanguageDefinition extends BaseLanguage<Object, PyJabrContext
         if (f != null) {
             f = f.getCanonicalFile();
         }
-        PythonExec.execCode(script.getBytes(StandardCharsets.UTF_8), String.valueOf(f), buildGlobals(eventContainer.getCtx()));
+        PythonExec.execCode(script.getBytes(StandardCharsets.UTF_8), String.valueOf(f), buildGlobals(eventContainer, baseEvent));
     }
 
     @Override

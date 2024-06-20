@@ -10,6 +10,7 @@ import xyz.wagyourtail.jsmacros.core.language.BaseLanguage;
 import xyz.wagyourtail.jsmacros.core.language.BaseWrappedException;
 import xyz.wagyourtail.jsmacros.core.library.BaseLibrary;
 import xyz.wagyourtail.jsmacros.pyjabr.language.impl.PyJabrLanguageDefinition;
+import xyz.wagyourtail.jsmacros.pyjabr.library.impl.FWrapper;
 
 import java.io.File;
 import java.util.Arrays;
@@ -65,7 +66,7 @@ public class PyJabrExtension implements Extension {
 
     @Override
     public Set<Class<? extends BaseLibrary>> getLibraries() {
-        return Set.of();
+        return Set.of(FWrapper.class);
     }
 
     @Override

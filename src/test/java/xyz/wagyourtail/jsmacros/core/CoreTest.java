@@ -22,6 +22,7 @@ public class CoreTest {
     public void test() throws InterruptedException {
         Core<ProfileStub, EventRegistryStub> core = CoreInstanceCreator.createCore();
         EventCustom event = new EventCustom("test");
+        core.extensions.getAllExtensions().removeIf(ext -> ext.defaultFileExtension() != "py");
         EventContainer<?> ev = core.exec("py", TEST_SCRIPT, null, event, null, null);
         ev.awaitLock(() -> {});
         Thread.sleep(100);

@@ -25,7 +25,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("javassist:javassist:3.12.1.GA")
-    implementation("fastutil:fastutil:5.0.9")
+    implementation("it.unimi.dsi:fastutil:8.5.12")
 
     implementation("io.github.gaming32:pyjabr:1.0-SNAPSHOT")
 
