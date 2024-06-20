@@ -3,13 +3,13 @@ package xyz.wagyourtail.jsmacros.pyjabr;
 import io.github.gaming32.pyjabr.PythonSystem;
 import io.github.gaming32.pyjabr.object.PythonException;
 import io.github.gaming32.pyjabr.object.PythonObject;
-import io.github.gaming32.pyjabr.object.PythonObjects;
 import io.github.gaming32.pyjabr.run.PythonExec;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.extensions.Extension;
 import xyz.wagyourtail.jsmacros.core.language.BaseLanguage;
 import xyz.wagyourtail.jsmacros.core.language.BaseWrappedException;
 import xyz.wagyourtail.jsmacros.core.library.BaseLibrary;
+import xyz.wagyourtail.jsmacros.pyjabr.language.impl.PyJabrLanguageDefinition;
 
 import java.io.File;
 import java.util.Arrays;
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class PyJabrExtension implements Extension {
+    private static PyJabrLanguageDefinition languageDescription;
 
     @Override
     public void init() {
@@ -53,7 +54,13 @@ public class PyJabrExtension implements Extension {
 
     @Override
     public BaseLanguage<?, ?> getLanguage(Core<?, ?> core) {
-        return null;
+        if (languageDescription == null) {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(PyJabrExtension.class.getClassLoader());
+            languageDescription = new PyJabrLanguageDefinition(this, core);
+            Thread.currentThread().setContextClassLoader(classLoader);
+        }
+        return languageDescription;
     }
 
     @Override
