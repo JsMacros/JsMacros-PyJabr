@@ -4,6 +4,7 @@ import io.github.gaming32.pyjabr.PythonSystem;
 import io.github.gaming32.pyjabr.object.PythonException;
 import io.github.gaming32.pyjabr.object.PythonObject;
 import io.github.gaming32.pyjabr.object.PythonObjects;
+import io.github.gaming32.pyjabr.run.PythonExec;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.extensions.Extension;
 import xyz.wagyourtail.jsmacros.core.language.BaseLanguage;
@@ -20,6 +21,7 @@ public class PyJabrExtension implements Extension {
     @Override
     public void init() {
         PythonSystem.initialize();
+        PythonExec.execString("print('Hello PyJabr!', flush = True)", "null");
     }
 
     @Override
